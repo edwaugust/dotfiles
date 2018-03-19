@@ -168,12 +168,55 @@ mode "resize" {
         bindsym $mod+r mode "default"
 }
 
+for_window [class="^.*"] border pixel 0
+
 bindsym $mod+r mode "resize"
 
-exec --no-startup-id xrdb ~/.Xresources
+set $mode_gaps Gaps: (o) outer, (i) inner
+set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
-bar {
-        status_command i3status
+bindsym $mod+Shift+g mode "$mode_gaps"
+
+mode "$mode_gaps" {
+        bindsym o      mode "$mode_gaps_outer"
+        bindsym i      mode "$mode_gaps_inner"
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
 }
+
+mode "$mode_gaps_inner" {
+        bindsym plus  gaps inner current plus 5
+        bindsym minus gaps inner current minus 5
+        bindsym 0     gaps inner current set 0
+
+        bindsym Shift+plus  gaps inner all plus 5
+        bindsym Shift+minus gaps inner all minus 5
+        bindsym Shift+0     gaps inner all set 0
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_outer" {
+        bindsym plus  gaps outer current plus 5
+        bindsym minus gaps outer current minus 5
+        bindsym 0     gaps outer current set 0
+
+        bindsym Shift+plus  gaps outer all plus 5
+        bindsym Shift+minus gaps outer all minus 5
+        bindsym Shift+0     gaps outer all set 0
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+gaps inner 10
+smart_gaps on
+
+exec --no-startup-id xrdb ~/.Xresources &
+exec xinput set-prop "TPPS/2 IBM TrackPoint" "libinput Accel Speed" -1
+exec xinput set-prop "SynPS/2 Synaptics TouchPad" "Device Enabled" 0
+exec --no-startup-id wal -R &
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh &
+exec --no-startup-id xcompmgr -c &
+

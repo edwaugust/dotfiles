@@ -1,9 +1,18 @@
 URxvt.font: xft:Inconsolata:size=16
 URxvt.scrollBar: false
 
+URxvt.perl-ext-common:  matcher,tabbedex,searchable-scrollback,fullscreen,resize-font
+
+URxvt.keysym.F11: perl:fullscreen:switch
+URxvt.keysym.C-Down:  resize-font:smaller
+URxvt.keysym.C-Up:    resize-font:bigger
+
+urxvt*transparent: true
+urxvt*shading: 10
 
 *.foreground: #F8F8F2
-*.background: #000000
+;*.background: #000000
+;URxvt.background: [75]#000000
 *.color0:     #000000
 *.color8:     #4D4D4D
 *.color1:     #FF5555
